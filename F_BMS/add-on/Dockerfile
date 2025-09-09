@@ -1,5 +1,6 @@
 FROM python:3.10-slim-buster
 
+# تثبيت الحزم الأساسية لنظام التشغيل اللازمة لـ OpenCV
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1-mesa-glx \
     libsm6 \
@@ -17,19 +18,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgtk2.0-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# نسخ الملفات الأساسية للمشروع
+COPY requirements.txt /app/
+COPY app.py /app/
+COPY templates/ /app/templates/
+COPY unified_platform.db /data/
 
-COPY ../requirements.txt /app/
-COPY ../app.py /app/
-COPY ../templates/ /app/templates/
-
-
+# تثبيت مكتبات بايثون
 WORKDIR /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # إعدادات الإضافة
 COPY config.json /data/config.json
 
-
+# نسخ السكريبت الذي يشغل التطبيق
 COPY rootfs/run.sh /usr/bin/run.sh
 RUN chmod a+x /usr/bin/run.sh
 
