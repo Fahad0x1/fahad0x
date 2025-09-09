@@ -1,0 +1,25 @@
+{
+  "name": "BMS Unified Platform",
+  "version": "1.0.0",
+  "slug": "bms_unified_platform",
+  "description": "A Building Management System powered by Flask and integrated with Home Assistant.",
+  "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
+  "url": "https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME",
+  "startup": "application",
+  "ports": {
+    "5000/tcp": 5000
+  },
+  "boot": "auto",
+  "host_network": true,
+  "options": {
+    "ha_token": ""
+  },
+  "schema": {
+    "ha_token": "str"
+  },
+  "environment": {
+    "HA_URL": "http://homeassistant.local:8123/api",
+    "HA_TOKEN": ""
+  },
+  "panel_icon": "mdi:home-assistant"
+}
