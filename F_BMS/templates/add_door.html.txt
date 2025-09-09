@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Add Door</h2>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="doorName" class="form-label">Door Name:</label>
+        <input type="text" class="form-control" id="doorName" name="doorName" required>
+    </div>
+    <div class="mb-3">
+        <label for="doorId" class="form-label">Door ID:</label>
+        <input type="number" class="form-control" id="doorId" name="doorId" required>
+    </div>
+    <div class="mb-3">
+        <label for="groupName" class="form-label">Group Name:</label>
+        <input type="text" class="form-control" id="groupName" name="groupName">
+    </div>
+    <div class="mb-3">
+        <label for="hubName" class="form-label">Hub Name:</label>
+        <input type="text" class="form-control" id="hubName" name="hubName">
+    </div>
+    <div class="mb-3">
+        <label for="batteryLevel" class="form-label">Battery Level (%):</label>
+        <input type="number" class="form-control" id="batteryLevel" name="batteryLevel" min="0" max="100">
+    </div>
+    <button type="submit" class="btn btn-success">Add Door</button>
+</form>
+
+{% endblock %}

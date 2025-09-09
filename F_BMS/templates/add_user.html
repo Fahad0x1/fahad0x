@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>إضافة مستخدم جديد</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">اسم المستخدم</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">البريد الإلكتروني</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="mb-3">
+            <label for="expire" class="form-label">تاريخ انتهاء الصلاحية</label>
+            <input type="date" class="form-control" id="expire" name="expire">
+            <small class="text-muted">إذا لم تحدد، سيتم ضبطه تلقائيًا بعد سنة من اليوم.</small>
+        </div>
+        <button type="submit" class="btn btn-success">إضافة مستخدم</button>
+        <a href="{{ url_for('users') }}" class="btn btn-secondary">العودة لقائمة المستخدمين</a>
+    </form>
+</div>
+{% endblock %}

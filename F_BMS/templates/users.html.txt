@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Users List</h2>
+<a href="{{ url_for('add_user') }}" class="btn btn-success mb-2">Add User</a>
+
+<!-- Search box -->
+<input type="text" id="userSearch" class="form-control mb-3" placeholder="Search by name...">
+
+<div id="usersList">
+    {% for u in users %}
+        <div class="card user-card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ u.userName }}</h5>
+                <p class="card-text">
+                    <strong>Email:</strong> {{ u.userEmailAddress }}<br>
+                    <strong>Expiration:</strong> {{ u.dateExpiration }}
+                </p>
+                <a href="{{ url_for('encode', user_id=u.userId) }}" class="btn btn-primary btn-sm">Send Key</a>
+                <a href="" class="btn btn-primary btn-sm">Matrix</a>
+                <a href="{{ url_for('delete_user', user_id=u.userId) }}" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+document.getElementById('userSearch').addEventListener('input', function() {
+    let filter = this.value.toLowerCase();
+    let cards = document.querySelectorAll('.user-card');
+    cards.forEach(function(card) {
+        let name = card.querySelector('.card-title').textContent.toLowerCase();
+        card.style.display = name.includes(filter) ? '' : 'none';
+    });
+});
+</script>
+{% endblock %}

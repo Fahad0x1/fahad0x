@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Door Controls</h2>
+
+<!-- Search box -->
+<input type="text" id="doorSearch" class="form-control mb-3" placeholder="Search by door name...">
+
+<div id="doorsList" class="row">
+  {% for d in doors %}
+  <div class="col-md-4 door-card mb-3">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ d.get('doorName', 'Unnamed') }}</h5>
+        <p class="small">ID: {{ d.get('doorId') }} | Group: {{ d.get('groupName','-') }}</p>
+        <p class="small">Hub: {{ d.get('hubName','-') }} | Battery: {{ d.get('batteryLevel','N/A') }}%</p>
+
+        <form method="POST" class="d-inline">
+          <input type="hidden" name="door_id" value="{{ d.get('doorId') }}">
+          <input type="hidden" name="action" value="open">
+          <button class="btn btn-success btn-sm">Open</button>
+        </form>
+        <form method="POST" class="d-inline">
+          <input type="hidden" name="door_id" value="{{ d.get('doorId') }}">
+          <input type="hidden" name="action" value="close">
+          <button class="btn btn-danger btn-sm">Close</button>
+        </form>
+        <form method="POST" class="d-inline">
+          <input type="hidden" name="door_id" value="{{ d.get('doorId') }}">
+          <input type="hidden" name="action" value="passage">
+          <button class="btn btn-primary btn-sm">Passage</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if not doors %}
+  <div class="alert alert-warning">No doors found.</div>
+{% endif %}
+
+<script>
+document.getElementById('doorSearch').addEventListener('input', function() {
+    let filter = this.value.toLowerCase();
+    let cards = document.querySelectorAll('.door-card');
+    cards.forEach(function(card) {
+        let name = card.querySelector('.card-title').textContent.toLowerCase();
+        card.style.display = name.includes(filter) ? '' : 'none';
+    });
+});
+</script>
+
+{% endblock %}

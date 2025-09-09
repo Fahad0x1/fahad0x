@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>✏️ تعديل الحجز</h2>
+  <form method="POST">
+    <div class="mb-2">
+      <label>الغرفة</label>
+      <select name="room" class="form-control">
+        <option value="Conference Room" {% if reservation.room=="Conference Room" %}selected{% endif %}>Conference Room</option>
+        <option value="Meeting Room" {% if reservation.room=="Meeting Room" %}selected{% endif %}>Meeting Room</option>
+      </select>
+    </div>
+    <div class="mb-2">
+      <label>العنوان</label>
+      <input type="text" name="title" class="form-control" value="{{ reservation.title }}" required>
+    </div>
+    <div class="mb-2">
+      <label>الحاجز</label>
+      <input type="text" name="reserved_by" class="form-control" value="{{ reservation.reserved_by }}" required>
+    </div>
+    <div class="mb-2">
+      <label>من</label>
+      <input type="datetime-local" name="start_time" class="form-control" value="{{ reservation.start_time.strftime('%Y-%m-%dT%H:%M') }}" required>
+    </div>
+    <div class="mb-2">
+      <label>إلى</label>
+      <input type="datetime-local" name="end_time" class="form-control" value="{{ reservation.end_time.strftime('%Y-%m-%dT%H:%M') }}" required>
+    </div>
+    <button type="submit" class="btn btn-success">💾 حفظ</button>
+    <a href="{{ url_for('meetings') }}" class="btn btn-secondary">↩ رجوع</a>
+  </form>
+</div>
+{% endblock %}

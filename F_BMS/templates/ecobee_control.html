@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ecobee Control</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            margin: 15px;
+            display: inline-block;
+            text-align: center;
+            width: 220px;
+        }
+        .temp { font-size: 2em; margin: 10px 0; }
+        button { border: none; padding: 8px 12px; margin: 5px; border-radius: 6px; cursor: pointer; }
+        .up { background: #4CAF50; color: white; }
+        .down { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    
+    <h2>Ecobee Control Panel</h2>
+    <div id="cards"></div>
+
+    <script>
+        async function loadData() {
+            try {
+                let res = await fetch("/ecobee/api");
+                let data = await res.json();
+                let container = document.getElementById("cards");
+                container.innerHTML = "";
+
+                data.forEach(device => {
+                    let card = document.createElement("div");
+                    card.className = "card";
+                    card.innerHTML = `
+                        <h3>${device.zone}</h3>
+                        <div>HVAC: ${device.hvac_state}</div>
+                        <div class="temp">${device.current_temp}°C</div>
+                        <div>Set: <span id="set-${device.zone}">${device.set_temp}</span>°C</div>
+                        <button class="up" onclick="changeTemp('${device.zone}', 1)">▲</button>
+                        <button class="down" onclick="changeTemp('${device.zone}', -1)">▼</button>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch(err) {
+                console.error("Error loading data:", err);
+            }
+        }
+
+        async function changeTemp(zone, delta) {
+            let el = document.getElementById("set-" + zone);
+            let currentTemp = parseFloat(el.innerText);
+            let newTemp = currentTemp + delta;
+
+            try {
+                let res = await fetch("/ecobee/set_temp", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ thermostat_id: zone, temperature_c: newTemp })
+                });
+                let data = await res.json();
+                
+                if(data.success){
+                    el.innerText = newTemp.toFixed(1);
+                } else {
+                    alert('حدث خطأ: ' + (data.error || "غير معروف"));
+                }
+            } catch(err) {
+                console.error(err);
+                alert("فشل إرسال درجة الحرارة.");
+            }
+        }
+
+        loadData();
+        setInterval(loadData, 10000); // تحديث كل 10 ثواني
+    </script>
+
+</body>
+</html>

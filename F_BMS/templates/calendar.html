@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <h2 class="mb-4">📆 تقويم الاجتماعات</h2>
+
+    <!-- أزرار تنقل -->
+    <div class="d-flex justify-content-between mb-3">
+        <a class="btn btn-outline-primary"
+           href="{{ url_for('calendar', date=(current_date - timedelta(days=7)).strftime('%Y-%m-%d')) }}">
+            ⬅️ الأسبوع السابق
+        </a>
+        <h5>الأسبوع: {{ start_of_week.strftime('%Y-%m-%d') }} → {{ end_of_week.strftime('%Y-%m-%d') }}</h5>
+        <a class="btn btn-outline-primary"
+           href="{{ url_for('calendar', date=(current_date + timedelta(days=7)).strftime('%Y-%m-%d')) }}">
+            ➡️ الأسبوع القادم
+        </a>
+    </div>
+
+    <!-- جدول التقويم -->
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>الساعة</th>
+                    {% for i in range(7) %}
+                        <th>{{ (start_of_week + timedelta(days=i)).strftime('%A %d-%m') }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for hour in range(8, 20) %} {# من 8 صباحًا إلى 8 مساءً #}
+                <tr>
+                    <td><strong>{{ "%02d:00" % hour }}</strong></td>
+                    {% for i in range(7) %}
+                        {% set day = (start_of_week + timedelta(days=i)) %}
+                        <td style="height:60px; position:relative;">
+                            {% for r in reservations %}
+                                {% if r.start_time.date() == day and r.start_time.hour <= hour < r.end_time.hour %}
+                                    <div style="background-color:#007bff; color:white; border-radius:5px;
+                                                padding:2px; font-size:0.8em; position:absolute; top:0; left:0; right:0;">
+                                        {{ r.title }}<br>
+                                        ({{ r.room }})
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

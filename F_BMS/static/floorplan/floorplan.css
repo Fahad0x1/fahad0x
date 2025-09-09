@@ -1,0 +1,5 @@
+.device:hover {
+    box-shadow: 0 0 10px #fff;
+    transform: scale(1.2);
+    transition: all 0.2s;
+}

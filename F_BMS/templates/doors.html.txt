@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Doors Control</h2>
+<form method="POST" class="mb-3">
+    Door ID: <input type="number" name="door_id" class="form-control mb-1" required>
+    Action:
+    <select name="action" class="form-control mb-1">
+        <option value="open">Open</option>
+        <option value="close">Close</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Execute</button>
+</form>
+{% endblock %}

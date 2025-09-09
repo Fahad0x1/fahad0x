@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Settings</h2>
+<form method="POST">
+    SmartAir Host: <input type="text" name="host" class="form-control mb-1" value="{{ host }}"><br>
+    Operator: <input type="text" name="op" class="form-control mb-1" value="{{ op }}"><br>
+    Password: <input type="password" name="pw" class="form-control mb-1" value="{{ pw }}"><br>
+    <button type="submit" class="btn btn-success">Save Settings</button>
+</form>
+{% endblock %}

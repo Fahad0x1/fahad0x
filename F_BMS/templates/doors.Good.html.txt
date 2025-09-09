@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Door Controls</h2>
+
+<div class="row">
+  {% for d in doors %}
+  <div class="col-md-4">
+    <div class="card mb-3 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ d.get('doorName', 'Unnamed') }}</h5>
+        <p class="small">ID: {{ d.get('doorId') }} | Group: {{ d.get('groupName','-') }}</p>
+        <p class="small">Hub: {{ d.get('hubName','-') }} | Battery: {{ d.get('batteryLevel','N/A') }}%</p>
+        <form method="POST" class="d-inline">
+          <input type="hidden" name="door_id" value="{{ d.get('doorId') }}">
+          <input type="hidden" name="action" value="open">
+          <button class="btn btn-success btn-sm">Open</button>
+        </form>
+        <form method="POST" class="d-inline">
+          <input type="hidden" name="door_id" value="{{ d.get('doorId') }}">
+          <input type="hidden" name="action" value="close">
+          <button class="btn btn-danger btn-sm">Close</button>
+        </form>
+        <form method="POST" class="d-inline">
+          <input type="hidden" name="door_id" value="{{ d.get('doorId') }}">
+          <input type="hidden" name="action" value="passage">
+          <button class="btn btn-primary btn-sm">Passage</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if not doors %}
+  <div class="alert alert-warning">No doors found.</div>
+{% endif %}
+{% endblock %}

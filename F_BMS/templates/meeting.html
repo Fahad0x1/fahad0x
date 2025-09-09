@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>📅 حجوزات الغرف</h2>
+  <form method="POST" class="mb-4">
+    <div class="mb-2">
+      <label>الغرفة</label>
+      <select name="room" class="form-control">
+        <option value="Conference Room">Conference Room</option>
+        <option value="Meeting Room">Meeting Room</option>
+      </select>
+    </div>
+    <div class="mb-2">
+      <label>العنوان</label>
+      <input type="text" name="title" class="form-control" required>
+    </div>
+    <div class="mb-2">
+      <label>الحاجز</label>
+      <input type="text" name="reserved_by" class="form-control" required>
+    </div>
+    <div class="mb-2">
+      <label>من</label>
+      <input type="datetime-local" name="start_time" class="form-control" required>
+    </div>
+    <div class="mb-2">
+      <label>إلى</label>
+      <input type="datetime-local" name="end_time" class="form-control" required>
+    </div>
+    <div class="mb-2">
+      <label>التكرار</label>
+      <select name="repeat" class="form-control">
+        <option value="none">بدون</option>
+        <option value="daily">يومي</option>
+        <option value="weekly">أسبوعي</option>
+      </select>
+    </div>
+    <div class="mb-2">
+      <label>حتى تاريخ (في حالة التكرار)</label>
+      <input type="datetime-local" name="repeat_until" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">إضافة</button>
+  </form>
+
+  <h3>📋 قائمة الحجوزات</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>الغرفة</th>
+        <th>العنوان</th>
+        <th>الحاجز</th>
+        <th>من</th>
+        <th>إلى</th>
+        <th>إجراءات</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in reservations %}
+      <tr>
+        <td>{{ r.room }}</td>
+        <td>{{ r.title }}</td>
+        <td>{{ r.reserved_by }}</td>
+        <td>{{ r.start_time }}</td>
+        <td>{{ r.end_time }}</td>
+        <td>
+          <a href="{{ url_for('edit_reservation', id=r.id) }}" class="btn btn-sm btn-info">✏️ تعديل</a>
+          <form method="POST" action="{{ url_for('delete_reservation', id=r.id) }}" style="display:inline">
+            <button class="btn btn-sm btn-danger">🗑️ حذف</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

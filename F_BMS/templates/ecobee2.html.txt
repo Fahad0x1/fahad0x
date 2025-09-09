@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ecobee Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f0f0; }
+        .card { background: white; padding: 20px; margin: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); display: inline-block; vertical-align: top; width: 250px; }
+        .card h3 { margin-top: 0; }
+        .card form select, .card form input { width: 100%; margin-bottom: 10px; padding: 5px; }
+        .card form button { padding: 8px 12px; width: 100%; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .card form button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Ecobee Dashboard</h1>
+    {% for device in devices %}
+    <div class="card">
+        <h3>{{ device.name }}</h3>
+        <p>State: {{ device.state }}</p>
+        <p>Temperature: {{ device.temperature or "N/A" }} °C</p>
+        <form action="{{ url_for('control_ecobee', entity=device.entity) }}" method="POST">
+            {% if device.hvac_modes %}
+            <label>HVAC Mode:</label>
+            <select name="hvac_mode">
+                {% for mode in device.hvac_modes %}
+                <option value="{{ mode }}">{{ mode }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+
+            {% if device.preset_modes %}
+            <label>Preset Mode:</label>
+            <select name="preset_mode">
+                {% for mode in device.preset_modes %}
+                <option value="{{ mode }}">{{ mode }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+
+            {% if device.fan_modes %}
+            <label>Fan Mode:</label>
+            <select name="fan_mode">
+                {% for mode in device.fan_modes %}
+                <option value="{{ mode }}">{{ mode }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+
+            <label>Temperature:</label>
+            <input type="number" name="temperature" step="0.5" placeholder="Set Temp">
+
+            <button type="submit">Apply</button>
+        </form>
+    </div>
+    {% endfor %}
+</body>
+</html>
