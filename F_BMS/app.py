@@ -20,12 +20,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////data/unified_platform.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-HA_URL = "http://10.0.8.228:8123/api"
-HA_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhZDE3YmE5MmJkODk0OWQ5YjI2NTc2OGU1MGMxMTNjMiIsImlhdCI6MTc1Njc1NjA4MiwiZXhwIjoyMDcyMTE2MDgyfQ.yrX6oGwsK7l8PWlQe9pjYmYOtQY7p6RceMnHRrz0x4c"
+HA_URL = "http://homeassistant.local:8123/api"
+HA_TOKEN = " token Bearer "
 
 
-# API_KEY = "mCYkdNbXqLAoUA9UWf3WCeOETo7M4ClY"
-# ACCESS_TOKEN = "m4D2pHVuLMHutLs_eLakkO1z"
+
+# API_KEY = ""
+# ACCESS_TOKEN = """
 
 
 HEADERS = {
@@ -961,4 +962,5 @@ def ecobee_dashboard():
 
 
 if __name__ == "__main__":
+
     app.run(host="0.0.0.0", port=5000, debug=True)
